@@ -15,11 +15,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_pressed()
 {
-    ui->label->setText("On");
 }
 
 void MainWindow::on_pushButton_released()
 {
-    ui->label->setText("Off");
 }
 

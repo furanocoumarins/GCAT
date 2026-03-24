@@ -1,22 +1,28 @@
 cmake_minimum_required(VERSION 3.19)
 project(gui LANGUAGES CXX)
+include_directories("widgets")
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
 
 qt_standard_project_setup()
 
+set(MainWindow_SOURCES
+    windows/MAIN/mainwindow.cpp
+    windows/MAIN/mainwindow.h
+    windows/MAIN/mainwindow.ui
+)
+
 qt_add_executable(gui
     WIN32 MACOSX_BUNDLE
     main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
+
+    ${MainWindow_SOURCES}
 )
 
 target_link_libraries(gui
     PRIVATE
-        Qt::Core
-        Qt::Widgets
+         Qt::Core
+         Qt::Widgets
 )
 
 install(TARGETS gui
