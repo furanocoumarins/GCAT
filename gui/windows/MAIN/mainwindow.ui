@@ -74,7 +74,7 @@
     <property name="tabBarAutoHide">
      <bool>false</bool>
     </property>
-    <widget class="QWidget" name="tab">
+    <widget class="QWidget" name="tabOPTIONS">
      <attribute name="title">
       <string>Опции</string>
      </attribute>
@@ -190,7 +190,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QFrame" name="SearchSource_fr_2">
+     <widget class="QFrame" name="positionOPTIONS">
       <property name="geometry">
        <rect>
         <x>70</x>
@@ -223,7 +223,7 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <layout class="QHBoxLayout" name="PositionSpinsLayout">
          <item>
           <spacer name="horizontalSpacer_4">
            <property name="orientation">
@@ -238,7 +238,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox_2">
+          <widget class="QSpinBox" name="startPOSITION">
            <property name="specialValueText">
             <string>start</string>
            </property>
@@ -283,7 +283,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QSpinBox" name="spinBox">
+          <widget class="QSpinBox" name="endPOSITION">
            <property name="specialValueText">
             <string>end</string>
            </property>
@@ -500,6 +500,9 @@
            <property name="text">
             <string>Любая</string>
            </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -587,8 +590,105 @@
        </item>
       </layout>
      </widget>
+     <widget class="QFrame" name="Anatation_options">
+      <property name="geometry">
+       <rect>
+        <x>350</x>
+        <y>360</y>
+        <width>400</width>
+        <height>145</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::Box</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <property name="lineWidth">
+       <number>2</number>
+      </property>
+      <property name="midLineWidth">
+       <number>3</number>
+      </property>
+      <layout class="QVBoxLayout" name="SourceOfSearch_lay_7">
+       <item>
+        <widget class="QLabel" name="SourceSDeearch_lay_7">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Анатация региона&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::AutoText</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="FileLAYOUT">
+           <item>
+            <widget class="QPushButton" name="fileEXportBUTTON">
+             <property name="text">
+              <string>Загрузить из файла</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="fileEXportSTATUS">
+             <property name="text">
+              <string>файл не выбран</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_12">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="ncbiBUTTON">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="acceptDrops">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Выгрузить c ncbi</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="autoRepeat">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </widget>
-    <widget class="QWidget" name="tab_2">
+    <widget class="QWidget" name="tabRESULTS">
      <attribute name="title">
       <string>Результат</string>
      </attribute>
