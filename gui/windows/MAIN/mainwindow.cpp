@@ -17,7 +17,39 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_mainBUTTON_released()
 {
-    ui->mainBUTTON->setText(ui->ncbiBUTTON->property("fileURL").toString());
+    enum conversionTYPE {ANY, TRANSITION, TRANSVERSION};
+    enum placeTYPE {GEN, EXON, CDS, OTHER};
+    bool optionsISvalid = false;
+
+    QString conversionsEFURL = ui->inputfileEXportBUTTON->property("fileURL").toString();
+    if (conversionsEFURL.isNull()){
+
+    }
+    QString anatationEFURL = ui->ncbiBUTTON->property("fileURL").toString();
+    if (anatationEFURL.isNull()){
+
+    }
+    QString target = ui->targetEDIT->text();
+    if (target.isNull()){
+
+    }
+
+    int startPOS = ui->startPOSITION->value();
+    int endPOS = ui->endPOSITION->value();
+
+    conversionTYPE ctype;
+    if (ui->anyCTYPE->isChecked()) ctype = ANY;
+    else if (ui->transitionCTYPE->isChecked()) ctype = TRANSITION;
+    else ctype = TRANSVERSION;
+
+    std::vector<placeTYPE> ptypeFLAGS;
+    if (ui->genPLACE->isChecked()) ptypeFLAGS.push_back(GEN);
+    if (ui->exonPLACE->isChecked()) ptypeFLAGS.push_back(EXON);
+    if (ui->cdsPLACE->isChecked()) ptypeFLAGS.push_back(CDS);
+    if (ui->otherPLACE->isChecked()) ptypeFLAGS.push_back(OTHER);
+    if (ptypeFLAGS.empty()){
+
+    }
 }
 
 void MainWindow::is_endposValid(int value){

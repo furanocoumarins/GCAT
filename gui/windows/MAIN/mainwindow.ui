@@ -88,7 +88,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Поиск</string>
+       <string>Анализ</string>
       </property>
      </widget>
      <widget class="QFrame" name="placeOPTIONS">
@@ -515,7 +515,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QRadioButton" name="radioButton">
+          <widget class="QRadioButton" name="anyCTYPE">
            <property name="text">
             <string>Любая</string>
            </property>
@@ -525,14 +525,14 @@
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_2">
+          <widget class="QRadioButton" name="transitionCTYPE">
            <property name="text">
             <string>Транзиция</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QRadioButton" name="radioButton_3">
+          <widget class="QRadioButton" name="transversionCTYPE">
            <property name="text">
             <string>Трансверсия</string>
            </property>

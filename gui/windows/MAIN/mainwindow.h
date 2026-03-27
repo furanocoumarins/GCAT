@@ -18,8 +18,6 @@ public:
     ~MainWindow() override;
 
 private slots:
-    void on_mainBUTTON_pressed();
-
     void on_mainBUTTON_released();
 
     void on_endPOSITION_valueChanged(int value);
