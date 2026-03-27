@@ -26,9 +26,15 @@ private slots:
 
     void on_startPOSITION_valueChanged(int value);
 
+    void on_anatationEXportBUTTON_released();
+
+    void on_ncbiBUTTON_clicked(bool checked);
+
 private:
     Ui::MainWindow *ui;
 
     void is_endposValid(int value);
+
+    QString default_message_file_export = "Загрузить из файла";
 };
 #endif // MAINWINDOW_H
