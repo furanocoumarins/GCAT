@@ -18,9 +18,9 @@ public:
     ~MainWindow() override;
 
 private slots:
-    void on_pushButton_pressed();
+    void on_mainBUTTON_pressed();
 
-    void on_pushButton_released();
+    void on_mainBUTTON_released();
 
     void on_endPOSITION_valueChanged(int value);
 
@@ -30,11 +30,13 @@ private slots:
 
     void on_ncbiBUTTON_clicked(bool checked);
 
+    void on_inputfileEXportBUTTON_released();
+
 private:
     Ui::MainWindow *ui;
 
     void is_endposValid(int value);
 
-    QString default_message_file_export = "Загрузить из файла";
+    QString default_message_file_export = "Выбрать файл";
 };
 #endif // MAINWINDOW_H

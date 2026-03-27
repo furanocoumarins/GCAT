@@ -78,10 +78,10 @@
      <attribute name="title">
       <string>Опции</string>
      </attribute>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="mainBUTTON">
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>420</x>
         <y>220</y>
         <width>261</width>
         <height>91</height>
@@ -91,13 +91,13 @@
        <string>Поиск</string>
       </property>
      </widget>
-     <widget class="QFrame" name="SearchSource_fr">
+     <widget class="QFrame" name="placeOPTIONS">
       <property name="geometry">
        <rect>
         <x>70</x>
         <y>360</y>
-        <width>204</width>
-        <height>145</height>
+        <width>200</width>
+        <height>140</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -116,7 +116,7 @@
        <item>
         <widget class="QLabel" name="SourceSDeearch_lay">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Где искать&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Расположение&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::TextFormat::AutoText</enum>
@@ -144,28 +144,28 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QCheckBox" name="checkBox_3">
+            <widget class="QCheckBox" name="genPLACE">
              <property name="text">
               <string>Гены</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="checkBox_2">
+            <widget class="QCheckBox" name="exonPLACE">
              <property name="text">
               <string>Экзоны</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="checkBox">
+            <widget class="QCheckBox" name="cdsPLACE">
              <property name="text">
               <string>CDS'</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="checkBox_4">
+            <widget class="QCheckBox" name="otherPLACE">
              <property name="text">
               <string>Другое</string>
              </property>
@@ -188,6 +188,19 @@
          </item>
         </layout>
        </item>
+       <item>
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </widget>
      <widget class="QFrame" name="positionOPTIONS">
@@ -195,8 +208,8 @@
        <rect>
         <x>70</x>
         <y>190</y>
-        <width>204</width>
-        <height>145</height>
+        <width>200</width>
+        <height>140</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -327,13 +340,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QFrame" name="SearchSource_fr_3">
+     <widget class="QFrame" name="inputOPTIONS">
       <property name="geometry">
        <rect>
-        <x>70</x>
+        <x>350</x>
         <y>20</y>
-        <width>204</width>
-        <height>145</height>
+        <width>400</width>
+        <height>140</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -352,7 +365,7 @@
        <item>
         <widget class="QLabel" name="SourceSDeearch_lay_3">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Что искать&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Участок для изучния&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::TextFormat::AutoText</enum>
@@ -366,25 +379,31 @@
            <property name="orientation">
             <enum>Qt::Orientation::Horizontal</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Policy::Fixed</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
+             <width>20</width>
              <height>20</height>
             </size>
            </property>
           </spacer>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit"/>
+          <widget class="QLineEdit" name="targetEDIT"/>
          </item>
          <item>
           <spacer name="horizontalSpacer_10">
            <property name="orientation">
             <enum>Qt::Orientation::Horizontal</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Policy::Fixed</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
+             <width>20</width>
              <height>20</height>
             </size>
            </property>
@@ -394,13 +413,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QFrame" name="SearchSource_fr_4">
+     <widget class="QFrame" name="option5OPTIONS">
       <property name="geometry">
        <rect>
         <x>830</x>
         <y>190</y>
-        <width>204</width>
-        <height>145</height>
+        <width>200</width>
+        <height>140</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -461,13 +480,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QFrame" name="SearchSource_fr_5">
+     <widget class="QFrame" name="typeOPTIONS">
       <property name="geometry">
        <rect>
         <x>830</x>
         <y>20</y>
-        <width>204</width>
-        <height>145</height>
+        <width>200</width>
+        <height>140</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -523,13 +542,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QFrame" name="SearchSource_fr_6">
+     <widget class="QFrame" name="option6OPTIONS">
       <property name="geometry">
        <rect>
         <x>830</x>
         <y>360</y>
-        <width>204</width>
-        <height>145</height>
+        <width>200</width>
+        <height>140</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -596,7 +615,7 @@
         <x>350</x>
         <y>360</y>
         <width>400</width>
-        <height>145</height>
+        <height>140</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -628,11 +647,24 @@
           <number>6</number>
          </property>
          <item>
+          <spacer name="horizontalSpacer_9">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <layout class="QVBoxLayout" name="FileLAYOUT">
            <item>
             <widget class="QPushButton" name="anatationEXportBUTTON">
              <property name="text">
-              <string>Загрузить из файла</string>
+              <string>Выбрать файл</string>
              </property>
             </widget>
            </item>
@@ -697,6 +729,61 @@
             <string/>
            </property>
           </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QFrame" name="conversionsFileOPTIONS">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>20</y>
+        <width>200</width>
+        <height>140</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::Box</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <property name="lineWidth">
+       <number>2</number>
+      </property>
+      <property name="midLineWidth">
+       <number>3</number>
+      </property>
+      <layout class="QVBoxLayout" name="SourceOfSearch_lay_8">
+       <item>
+        <widget class="QLabel" name="SourceSDeearch_lay_8">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Данные с заменами&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::TextFormat::AutoText</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="FileLAYOUT_2">
+           <item>
+            <widget class="QPushButton" name="inputfileEXportBUTTON">
+             <property name="text">
+              <string>Выбрать файл</string>
+             </property>
+             <property name="fileURL" stdset="0">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
