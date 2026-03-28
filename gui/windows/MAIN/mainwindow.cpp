@@ -15,23 +15,42 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::is_endposValid(int value){
+    int start = ui->startPOSITION->value();
+    value = value < start ? ++start : value;
+    ui->endPOSITION->setValue(value);
+}
+
+void MainWindow::clear_style(QWidget * widgetName){
+         widgetName->setStyleSheet("");
+}
+
+void MainWindow::set_errstyle(QWidget * widgetName, char type='a'){
+    switch (type){
+         case 'a': widgetName->setStyleSheet("background-color: rgb(255, 0, 0);");break;
+         case 'b': widgetName->setStyleSheet("background-color : rgb(200, 100, 100)");break;
+        }
+}
+
 void MainWindow::on_mainBUTTON_released()
 {
     enum conversionTYPE {ANY, TRANSITION, TRANSVERSION};
     enum placeTYPE {GEN, EXON, CDS, OTHER};
-    bool optionsISvalid = false;
+    bool optionsISvalid = true;
 
     QString conversionsEFURL = ui->inputfileEXportBUTTON->property("fileURL").toString();
     if (conversionsEFURL.isNull()){
-
+         set_errstyle(ui->inputfileEXportBUTTON);
+         optionsISvalid = false;
     }
     QString anatationEFURL = ui->ncbiBUTTON->property("fileURL").toString();
     if (anatationEFURL.isNull()){
-
+         // выгрузка с ncbi
     }
     QString target = ui->targetEDIT->text();
-    if (target.isNull()){
-
+    if (target.isEmpty()){
+         set_errstyle(ui->targetEDIT, 'b');
+         optionsISvalid = false;
     }
 
     int startPOS = ui->startPOSITION->value();
@@ -48,14 +67,11 @@ void MainWindow::on_mainBUTTON_released()
     if (ui->cdsPLACE->isChecked()) ptypeFLAGS.push_back(CDS);
     if (ui->otherPLACE->isChecked()) ptypeFLAGS.push_back(OTHER);
     if (ptypeFLAGS.empty()){
-
+         set_errstyle(ui->placeOPTIONS, 'b');
+         optionsISvalid = false;
     }
-}
 
-void MainWindow::is_endposValid(int value){
-    int start = ui->startPOSITION->value();
-    value = value < start ? ++start : value;
-    ui->endPOSITION->setValue(value);
+    if (optionsISvalid) ui->tabWidget->setCurrentIndex(1);
 }
 
 void MainWindow::on_endPOSITION_valueChanged(int value)
@@ -91,7 +107,6 @@ void MainWindow::on_anatationEXportBUTTON_released()
     }
 }
 
-
 void MainWindow::on_ncbiBUTTON_clicked(bool checked)
 {
     if(checked) ui->anatationEXportBUTTON->setText(default_message_file_export);
@@ -99,9 +114,9 @@ void MainWindow::on_ncbiBUTTON_clicked(bool checked)
     ui->ncbiBUTTON->setProperty("fileURL", "");
 }
 
-
 void MainWindow::on_inputfileEXportBUTTON_released()
 {
+    clear_style(ui->inputfileEXportBUTTON);
     QString fileURL = QFileDialog::getOpenFileName(
          this,
          tr("Выбирите файл"), "/home",
@@ -115,5 +130,29 @@ void MainWindow::on_inputfileEXportBUTTON_released()
          ui->inputfileEXportBUTTON->setText(default_message_file_export);
     else
          ui->inputfileEXportBUTTON->setText(fileName);
+}
+
+void MainWindow::on_targetEDIT_editingFinished(){
+    clear_style(ui->targetEDIT);
+}
+
+void MainWindow::on_genPLACE_released()
+{
+    clear_style(ui->placeOPTIONS);
+}
+
+void MainWindow::on_exonPLACE_released()
+{
+    clear_style(ui->placeOPTIONS);
+}
+
+void MainWindow::on_cdsPLACE_released()
+{
+    clear_style(ui->placeOPTIONS);
+}
+
+void MainWindow::on_otherPLACE_released()
+{
+    clear_style(ui->placeOPTIONS);
 }
 

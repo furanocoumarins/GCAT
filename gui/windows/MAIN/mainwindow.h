@@ -30,10 +30,23 @@ private slots:
 
     void on_inputfileEXportBUTTON_released();
 
+    void on_targetEDIT_editingFinished();
+
+    void on_genPLACE_released();
+
+    void on_exonPLACE_released();
+
+    void on_cdsPLACE_released();
+
+    void on_otherPLACE_released();
+
 private:
     Ui::MainWindow *ui;
 
     void is_endposValid(int value);
+
+    void set_errstyle(QWidget * widgetName, char type);
+    void clear_style(QWidget * widgetName);
 
     QString default_message_file_export = "Выбрать файл";
 };

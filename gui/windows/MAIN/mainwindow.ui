@@ -142,7 +142,7 @@
           </spacer>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout">
+          <layout class="QVBoxLayout" name="placeLAY">
            <item>
             <widget class="QCheckBox" name="genPLACE">
              <property name="text">
@@ -365,7 +365,7 @@
        <item>
         <widget class="QLabel" name="SourceSDeearch_lay_3">
          <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Участок для изучния&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; text-decoration: underline&quot;&gt;Участок для изучния&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="textFormat">
           <enum>Qt::TextFormat::AutoText</enum>
@@ -391,7 +391,11 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLineEdit" name="targetEDIT"/>
+          <widget class="QLineEdit" name="targetEDIT">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+          </widget>
          </item>
          <item>
           <spacer name="horizontalSpacer_10">
