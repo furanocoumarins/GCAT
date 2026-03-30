@@ -81,7 +81,7 @@ void MainWindow::on_endPOSITION_valueChanged(int value)
 
 void MainWindow::on_startPOSITION_valueChanged(int value)
 {
-    is_endposValid(value);
+    is_endposValid(ui->endPOSITION->value());
 }
 
 void MainWindow::on_anatationEXportBUTTON_released()
