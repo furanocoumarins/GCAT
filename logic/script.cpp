@@ -2,71 +2,21 @@
 #include <fstream>
 #include <string>
 #include <unordered_set>
-#include <vector>
 #include <sstream>
 #include <deque>
 
+#include <ranges>
+#include <string_view>
+
 using namespace std;
 
-
-struct Feature { string seqid, raw, type; long start=0, end=0; };
-
-static inline bool overlaps(long start1, long end1, long start2, long end2) {
-    return !(end1 < start2 || end2 < start1);
-}
-
-bool gff_is_interest(unordered_set<string> &types, const string &type) {
-    if (types.count(type) > 0) return true;
-    if (types.count("all") > 0) return true;
-    return false;
-} 
-
-vector<string> splitTab(const string &s){
-    vector<string> cols; string cur; stringstream ss(s);
-    while(getline(ss, cur, '\t')) cols.push_back(cur);
-    return cols;
-}
-
-bool parseRegion(const string &reg, string &chr, long &rstart, long &rend){
-    auto p = reg.find(':'); if(p==string::npos) return false;
-    chr = reg.substr(0,p);
-    auto q = reg.find('-', p+1); if(q==string::npos) return false;
-    try {
-        rstart = stol(reg.substr(p+1, q-(p+1)));
-        rend   = stol(reg.substr(q+1));
-    } catch(...) { return false; }
-    if(rstart > rend) swap(rstart, rend);
-    return true;
-}
-
-void skipLines(ifstream &file, string &line){
-    while(true){
-        streampos pos = file.tellg();
-        if(!getline(file, line)) break;
-        if(!line.empty() && line[0]=='#') continue;
-        file.seekg(pos); break;
-    }
-}
-
-unordered_set<string> parseTypes(const string &s){
-    unordered_set<string> types;
-    string cur; stringstream ss(s);
-    if(s.find(',') != string::npos){
-        while(getline(ss, cur, ',')){
-            if(!cur.empty()) types.insert(cur);
-        }
-    }
-    else {
-        types.insert(s);
-    }
-    return types;
-}
 
 int main(int argc, char** argv){
     if(argc < 3){
         cerr << "Usage: " << argv[0] << " file1.vcf file2.sff3 [REGION] [-t TYPES]\n";
         return 1;
     }
+
     string vcfPath = argv[1];
     string gffPath = argv[2];
 
@@ -99,7 +49,7 @@ int main(int argc, char** argv){
         useRegion = true;
     }
 
-    auto wantedTypes = parseTypes(types_arg);
+    auto wantedTypes = std::views::split(types_arg, ',');
     if(wantedTypes.empty()){
         cerr << "No type was specified\n"; return 1;
     }
@@ -129,7 +79,7 @@ int main(int argc, char** argv){
     if(!readNext_gff(gline)) gffEOF = true;
 
     while(getline(vcf, vline)){
-        auto vcols = splitTab(vline);
+        auto vcols = std::views::split(vline, '\t');
         string vchr = vcols[0];
         long vpos = 0;
         try { vpos = stol(vcols[1]); } catch(...) { continue; }
@@ -141,7 +91,7 @@ int main(int argc, char** argv){
 
 
         while(!gffEOF){
-            auto gcols = splitTab(gline);
+            auto gcols = std::views::split(gline, '\t');
             if(gcols.size() < 5){
                 if(!readNext_gff(gline)){ gffEOF = true; break; }
                 continue;
