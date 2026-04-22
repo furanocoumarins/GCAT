@@ -1,42 +1,43 @@
 #include "api.hpp"
+#include <vector>
+#include <string>
+#include <iostream>
 
 using namespace std;
 
 catAPI::catAPI(){
     this->target_name = "";
-    this->types.insert("all");
 }
 
-catAPI::catAPI(string target){
-    this->target_name = target;
-    this->types.insert("all");
+catAPI::catAPI(ifstream &vcf, ifstream &gff3){
+    this->target_name = "";
+
+    this->vcf_stream = &vcf;
+    this->gff_stream = &gff3;
 }
 
 inline bool catAPI::overlaps(long start1, long end1, long start2, long end2){
-    return end1 >= start2 || end2 >= start1;
+    return (end1 >= start2 && end2 >= start1);
 }
 
-bool catAPI::fits_the_type(unordered_set<string> &types, const string &type){
-    return types.count(type) > 0 || types.count("all") > 0 ? true : false;
+bool catAPI::fits_the_type(const string &type){
+    return this->types.count(type) > 0 || this->types.count("all") > 0 ? true : false;
 }
 
-bool catAPI::fits_the_region(const string &reg, string &chr, long &rstart, long &rend){
-
+bool catAPI::parse_region(const string &reg){
     auto p = reg.find(':');
     if(p==string::npos) return false;
 
-    chr = reg.substr(0,p);
+    this->target_chr = reg.substr(0,p);
     auto q = reg.find('-', p+1);
     if(q==string::npos) return false;
 
-
     try {
-        rstart = stol(reg.substr(p+1, q-(p+1)));
-        rend   = stol(reg.substr(q+1));
+        this->Sregion = stol(reg.substr(p+1, q-(p+1)));
+        this->Eregion = stol(reg.substr(q+1));
     }catch(...) { return false; }
 
-    if(rstart > rend) swap(rstart, rend);
-
+    if(this->Sregion > this->Eregion) swap(this->Sregion, this->Eregion);
     return true;
 }
 
@@ -49,22 +50,18 @@ void catAPI::skipLines(ifstream &file, string &line){
     }
 }
 
-unordered_set<string> catAPI::parseTypes(const string &s){
-    unordered_set<string> types;
+void catAPI::parseTypes(const string &s){
     string cur;
     stringstream ss(s);
-
     if(s.find(',') != string::npos)
         while(getline(ss, cur, ','))
-            if(!cur.empty()) types.insert(cur);
+            if(!cur.empty()) this->types.insert(cur);
             else;
-    else types.insert(s);
-
-    return types;
+    else this->types.insert(s);
 }
 
 bool catAPI::readNext_gff(string &line){
-    while(getline(this->gff_stream, line)){
+    while(getline(*this->gff_stream, line)){
         if(line.empty()) continue;
         if(line[0]=='#') continue;
         return true;
@@ -79,6 +76,7 @@ void catAPI::prepare(string target_name, string chr, long S, long E){
     this->Sregion = S; //todo: провекри добавить
     this->Eregion = E;
 }
+
 
 void catAPI::analyse()
 {
@@ -99,63 +97,73 @@ void catAPI::analyse()
     long gend;
 
 
-
     if(!readNext_gff(gline)) gffEOF = true;
-
-    while(getline(this->vcf_stream, vline)){
-        auto vcols = std::ranges::views::split(vline, '\t');
-
-        vchr = vcols[0];
-        vpos = 0;
-
-        try{
-            vpos = stol(vcols[1]);
-        }catch(...) { continue; }
-
-        if(vchr != target_chr) continue;
-        if(vpos < Sregion || vpos > Eregion) continue;
+    this->skipLines(*this->vcf_stream, vline);
+    this->skipLines(*this->gff_stream, gline);
 
 
-        while(!gffEOF){
-            auto gcols = std::views::split(gline, '\t');
-            if(gcols.size() < 5){
-                if(!readNext_gff(gline)){ gffEOF = true; break; }
-                continue;
-            }
-            gchr = gcols[0];
-            type = gcols[2];
-            gstart = 0;
-            gend = 0;
-            try{ gstart = stol(gcols[3]); gend = stol(gcols[4]); } catch(...){
-                if(!readNext_gff(gline)){ gffEOF = true; break; }
-                continue;
-            }
 
-            // This part about work with chromosome
-            // should be done later
+    while(getline(*this->vcf_stream, vline)){
+      vector<std::string> vcols;
+      auto parts_view = std::views::split(vline, '\t');
+      for (auto &&rng : parts_view) vcols.emplace_back(rng.begin(), rng.end());
 
-            //if(gchr < vchr){ if(!readNext_gff(gline)){ gffEOF = true; break; } continue; }
-            //if(gchr > vchr) break;
+      vchr = vcols[0];
+      vpos = 0;
 
-            if(gstart > vpos) break; // vpos + vLength
+      try{
+          vpos = stol(vcols[1]);
+      }catch(...) { continue; }
 
-            if(fits_the_type(types, type)){
-                Candidate f;
-                f.seqid = gchr; f.type = type; f.start = gstart;
-                f.end = gend; f.raw = gline;
-                candidates.push_back(std::move(f));
-            }
-            if(!readNext_gff(gline)){ gffEOF = true; break; }
+
+      if (this->useRegion){
+        if (vchr != this->target_chr) continue;
+        if (vpos < this->Sregion || vpos > this->Eregion) continue;
+      }
+
+      while(!gffEOF){
+        vector<std::string> gcols;
+        auto parts_view = std::views::split(gline, '\t');
+        for (auto &&rng : parts_view) gcols.emplace_back(rng.begin(), rng.end());
+
+        if(gcols.size() < 5){
+          if(!readNext_gff(gline)){ gffEOF = true; break; }
+          continue;
+        }
+        gchr = gcols[0];
+        type = gcols[2];
+        gstart = 0;
+        gend = 0;
+
+
+        try{ gstart = stol(gcols[3]); gend = stol(gcols[4]); } catch(...){
+          if(!readNext_gff(gline)){ gffEOF = true; break; }
+          continue;
         }
 
-        while(!candidates.empty() && candidates.front().end < vpos) candidates.pop_front();
+
+        if (gstart > vpos) break;
+
+          // This part about work with chromosome
+          // should be done later
+
+          //if(gchr < vchr){ if(!readNext_gff(gline)){ gffEOF = true; break; } continue; }
+          //if(gchr > vchr) break;
+
+        if(fits_the_type(type)){
+          Candidate f;
+          f.seqid = gchr; f.type = type; f.start = gstart;
+          f.end = gend; f.raw = gline;
+          candidates.push_back(std::move(f));
+        }
+        if(!readNext_gff(gline)){ gffEOF = true; break; }
+      }
+
+      while(!candidates.empty() && candidates.front().end < vpos) candidates.pop_front();
+
+      for(const auto &f : candidates){
+        if(f.seqid != "NC_000003.12" || vchr != "CM000665.2") continue; // (regionChr) now works only for this names of chromosom.
+        if(this->overlaps(f.start, f.end, vpos, vpos)) cout << vline <<  "\n"; break; // vpos + vLength. ()
+      }
     }
 }
-
-
-
-
-
-
-
-
