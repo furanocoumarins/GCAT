@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QFileDialog>
+#include "../../utils/utils.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -45,7 +46,8 @@ void MainWindow::on_mainBUTTON_released()
     }
     QString anatationEFURL = ui->ncbiBUTTON->property("fileURL").toString();
     if (anatationEFURL.isNull()){
-         // выгрузка с ncbi
+         std::string res = utils::get_gff3_file("CM000665.2");
+         ui->gfflabel->setText(QString::fromUtf8(res));
     }
     QString target = ui->targetEDIT->text();
     if (target.isEmpty()){

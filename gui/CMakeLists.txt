@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories("widgets")
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
+find_package(cpr REQUIRED)
 
 qt_standard_project_setup()
 
@@ -24,18 +25,19 @@ qt_add_executable(gui
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/utils/lexbor/source)
-
 add_library(lexbor STATIC IMPORTED)
 set_target_properties(
     lexbor PROPERTIES IMPORTED_LOCATION
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/lexbor/liblexbor_static.a
 )
 
+
 target_link_libraries(gui
     PRIVATE
          Qt::Core
          Qt::Widgets
          lexbor
+         cpr::cpr
 )
 
 install(TARGETS gui

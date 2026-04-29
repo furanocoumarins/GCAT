@@ -798,6 +798,19 @@
      <attribute name="title">
       <string>Результат</string>
      </attribute>
+     <widget class="QLabel" name="gfflabel">
+      <property name="geometry">
+       <rect>
+        <x>290</x>
+        <y>140</y>
+        <width>361</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
