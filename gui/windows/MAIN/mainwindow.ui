@@ -807,7 +807,7 @@
      <x>0</x>
      <y>0</y>
      <width>1160</width>
-     <height>24</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuGui_Conversions_Analyze_Tool">

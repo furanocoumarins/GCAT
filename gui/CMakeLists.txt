@@ -19,12 +19,23 @@ qt_add_executable(gui
     main.cpp
 
     ${MainWindow_SOURCES}
+    utils/utils.h
+    utils/utils.cpp
+)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/utils/lexbor/source)
+
+add_library(lexbor STATIC IMPORTED)
+set_target_properties(
+    lexbor PROPERTIES IMPORTED_LOCATION
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils/lexbor/liblexbor_static.a
 )
 
 target_link_libraries(gui
     PRIVATE
          Qt::Core
          Qt::Widgets
+         lexbor
 )
 
 install(TARGETS gui
