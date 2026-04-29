@@ -80,7 +80,6 @@ bool catAPI::readNext_gff(string &line){
     return false;
 }
 
-string test;
 void catAPI::analyse()
 {
     deque<Candidate> candidates;
@@ -141,7 +140,6 @@ void catAPI::analyse()
         gstart = 0;
         gend = 0;
 
-        test = gcols[0];
         try{ gstart = stol(gcols[3]); gend = stol(gcols[4]); } catch(...){
           if(!readNext_gff(gline)){ gffEOF = true; break; }
           continue;
