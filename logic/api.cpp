@@ -3,6 +3,8 @@
 #include <string>
 #include <iostream>
 
+#define INF ((unsigned) ~0)
+
 using namespace std;
 
 catAPI::catAPI(){
@@ -14,6 +16,14 @@ catAPI::catAPI(ifstream &vcf, ifstream &gff3){
 
     this->vcf_stream = &vcf;
     this->gff_stream = &gff3;
+}
+
+int catAPI::get_gff_chr(const string &str){
+  return stoi(str.substr(7,2));
+}
+
+int catAPI::get_vcf_chr(const string &str){
+  return  stoi(str.substr(6,2)) - 62 ;
 }
 
 inline bool catAPI::overlaps(long start1, long end1, long start2, long end2){
@@ -28,7 +38,9 @@ bool catAPI::parse_region(const string &reg){
     auto p = reg.find(':');
     if(p==string::npos) return false;
 
-    this->target_chr = reg.substr(0,p);
+    this->target_chr = get_vcf_chr(reg.substr(0,p));
+    if(p  == reg.size()-1) return true;
+
     auto q = reg.find('-', p+1);
     if(q==string::npos) return false;
 
@@ -63,21 +75,12 @@ void catAPI::parseTypes(const string &s){
 bool catAPI::readNext_gff(string &line){
     while(getline(*this->gff_stream, line)){
         if(line.empty()) continue;
-        if(line[0]=='#') continue;
         return true;
     }
     return false;
 }
 
-void catAPI::prepare(string target_name, string chr, long S, long E){
-    this->target_name = target_name;
-    if (chr != "CM000665.2") throw "for tests. needs to be replaced later";
-    this->target_chr = chr;
-    this->Sregion = S; //todo: провекри добавить
-    this->Eregion = E;
-}
-
-
+string test;
 void catAPI::analyse()
 {
     deque<Candidate> candidates;
@@ -86,10 +89,10 @@ void catAPI::analyse()
     string gline;
     string vline;
 
-    string vchr;
+    int vchr;
     long vpos;
 
-    string gchr;
+    int gchr;
 
     string type;
 
@@ -102,19 +105,21 @@ void catAPI::analyse()
     this->skipLines(*this->gff_stream, gline);
 
 
+    if (this->useRegion && !this->Sregion && !this->Eregion){
+      this->Sregion = 1; this->Eregion = INF;
+    }
 
     while(getline(*this->vcf_stream, vline)){
       vector<std::string> vcols;
       auto parts_view = std::views::split(vline, '\t');
       for (auto &&rng : parts_view) vcols.emplace_back(rng.begin(), rng.end());
 
-      vchr = vcols[0];
+      vchr = get_vcf_chr(vcols[0]);
       vpos = 0;
 
       try{
           vpos = stol(vcols[1]);
       }catch(...) { continue; }
-
 
       if (this->useRegion){
         if (vchr != this->target_chr) continue;
@@ -130,29 +135,25 @@ void catAPI::analyse()
           if(!readNext_gff(gline)){ gffEOF = true; break; }
           continue;
         }
-        gchr = gcols[0];
+
+        gchr = get_gff_chr(gcols[0]);
         type = gcols[2];
         gstart = 0;
         gend = 0;
 
-
+        test = gcols[0];
         try{ gstart = stol(gcols[3]); gend = stol(gcols[4]); } catch(...){
           if(!readNext_gff(gline)){ gffEOF = true; break; }
           continue;
         }
 
-
         if (gstart > vpos) break;
-
-          // This part about work with chromosome
-          // should be done later
-
-          //if(gchr < vchr){ if(!readNext_gff(gline)){ gffEOF = true; break; } continue; }
-          //if(gchr > vchr) break;
+        if(gchr < vchr){ if(!readNext_gff(gline)){ gffEOF = true; break; } continue; }
+        if(gchr > vchr) break;
 
         if(fits_the_type(type)){
           Candidate f;
-          f.seqid = gchr; f.type = type; f.start = gstart;
+          f.seqid = gcols[0]; f.type = type; f.start = gstart;
           f.end = gend; f.raw = gline;
           candidates.push_back(std::move(f));
         }
@@ -161,9 +162,10 @@ void catAPI::analyse()
 
       while(!candidates.empty() && candidates.front().end < vpos) candidates.pop_front();
 
+
       for(const auto &f : candidates){
-        if(f.seqid != "NC_000003.12" || vchr != "CM000665.2") continue; // (regionChr) now works only for this names of chromosom.
-        if(this->overlaps(f.start, f.end, vpos, vpos)) cout << vline <<  "\n"; break; // vpos + vLength. ()
+        if (get_gff_chr(f.seqid) != vchr) continue;
+        if(this->overlaps(f.start, f.end, vpos, vpos)) cout << vline <<  "\n"; break; // vpos + vLength.
       }
     }
 }
