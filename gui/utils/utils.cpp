@@ -1,10 +1,12 @@
 #include "utils.h"
-#include <QDebug>
+
 using namespace std;
 
 string utils::get_gff3_file(string CHROM){
     cpr::Response r = cpr::Get(cpr::Url{"https://www.ncbi.nlm.nih.gov/nuccore/"+CHROM});
     string re = utils::get_Assembly_link(r.text);
+
+    download_genome_gff(QString().fromStdString(re));
     return re;
 }
 
@@ -40,7 +42,8 @@ string utils::get_Assembly_link(const std::string& content)
 
          if (href && std::string((const char*)href).find("datasets") != std::string::npos) {
              res = (const char*)href;
-             return "https://www.ncbi.nlm.nih.gov" + res;
+             int len = res.length();
+             return res.substr(17, len - 18);
          }
 
     }
@@ -49,4 +52,56 @@ string utils::get_Assembly_link(const std::string& content)
     lxb_html_parser_destroy(parser);
 
     return "no find";
+}
+
+void utils::download_genome_gff(const QString &url)
+{
+    QString path = "ncbi_files";
+    QDir dir = QDir::currentPath();
+    if (!dir.exists(path)) {
+        dir.mkdir(path);
+    }
+    QString downloadPath = dir.filePath(path);
+
+    QProcess *DL = new QProcess();
+    DL->setWorkingDirectory(downloadPath);
+
+    QObject::connect(DL, &QProcess::finished, [=](int exitCode) {
+        QString URL = url;
+         if (exitCode != 0) {
+             DL->deleteLater();
+             return;
+         }
+         DL->deleteLater();
+
+         QProcess *unzip = new QProcess();
+         unzip->setWorkingDirectory(downloadPath);
+
+         QObject::connect(unzip, &QProcess::finished, [=](int code) {
+             clear_dir(downloadPath, URL);
+             unzip->deleteLater();
+         });
+         unzip->start("unzip", {"-o", "ncbi_dataset.zip"});
+         qDebug() << "unzip";
+    });
+    QStringList args;
+    args << "download" << "genome" << "accession" << url << "--include" << "gff3";
+    DL->start("ncbi-datasets", args);
+}
+
+void utils::clear_dir(const QDir &release_dir, QString fileName) {
+    QString relativePath = "ncbi_dataset/data/GCF_000001405.40/genomic.gff";
+
+    if (QFile::rename(release_dir.filePath(relativePath), release_dir.filePath(fileName+".gff"))) {
+        QStringList dest { "README.md","md5sum.txt","ncbi_dataset.zip"};
+        for(int i=0;i<3; i++){
+            if (QFile::exists(release_dir.filePath(dest[i]))){
+                QFile::remove(release_dir.filePath(dest[i]));
+            }else{
+                qDebug() << release_dir.dirName();
+            }
+        }
+        QDir dir = release_dir.filePath("ncbi_dataset");
+        dir.removeRecursively();
+    }
 }
