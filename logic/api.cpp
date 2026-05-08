@@ -38,7 +38,7 @@ bool catAPI::parse_region(const string &reg){
     auto p = reg.find(':');
     if(p==string::npos) return false;
 
-    this->target_chr = get_vcf_chr(reg.substr(0,p));
+    this->target_chr = stoi(reg.substr(0,p));
     if(p  == reg.size()-1) return true;
 
     auto q = reg.find('-', p+1);
@@ -163,7 +163,7 @@ void catAPI::analyse()
 
       for(const auto &f : candidates){
         if (get_gff_chr(f.seqid) != vchr) continue;
-        if(this->overlaps(f.start, f.end, vpos, vpos)) cout << vline <<  "\n"; break; // vpos + vLength.
+        if(this->overlaps(f.start, f.end, vpos, vpos)) cout << "[" << f.type << "] (" << "chr " << vchr << ") "<< vline <<  "\n"; break; // vpos + vLength.
       }
     }
 }
