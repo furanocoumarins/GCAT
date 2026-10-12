@@ -1,10 +1,10 @@
 ![схема](qqq.jpg)
 
 
-// build
+# build
 
 cmake .
 
-// dependencies
+# dependencies
 * Qt6
 * libcurl
