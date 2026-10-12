@@ -2,3 +2,8 @@
 build/
 *.autosave
 *.vcf
+CMakeFiles/
+build/
+.qt/
+*cmake*
+*Make*
