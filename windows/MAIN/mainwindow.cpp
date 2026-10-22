@@ -44,7 +44,13 @@ void MainWindow::on_mainBUTTON_released()
     }
     QString anatationEFURL = ui->ncbiBUTTON->property("fileURL").toString();
     if (anatationEFURL.isNull()){
-        std::string res = "CM000665.2";
+        if(utils::download_ncbi_genome("gcf.gff.gz")){
+            utils::unzip();
+            ui->gfflabel->setText("yspex");
+        }
+        else ui->gfflabel->setText("proval");
+    }else{
+        std::string res = "file";
         ui->gfflabel->setText(QString::fromUtf8(res));
     }
     QString target = ui->targetEDIT->text();
