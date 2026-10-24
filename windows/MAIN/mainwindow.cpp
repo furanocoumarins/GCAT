@@ -1,12 +1,29 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QtConcurrent>
+#include <QFutureWatcher>
+
 #include <QFileDialog>
 #include "../../utils/utils.h"
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    loaderMovie = new QMovie("assets/shark.gif", QByteArray(), this);
+
+    if (ui->popUP) {
+        ui->popUP->setWindowFlags(Qt::SubWindow | Qt::FramelessWindowHint);
+        ui->popUP->setFixedSize(300, 300);
+
+        if (ui->loaderLabel) {
+            ui->loaderLabel->setMovie(loaderMovie);
+            ui->loaderLabel->setScaledContents(true);
+        }
+
+        ui->popUP->hide();
+    }
 }
 
 MainWindow::~MainWindow()
@@ -42,21 +59,22 @@ void MainWindow::on_mainBUTTON_released()
         set_errstyle(ui->inputfileEXportBUTTON);
         optionsISvalid = false;
     }
-    QString anatationEFURL = ui->ncbiBUTTON->property("fileURL").toString();
-    if (anatationEFURL.isNull()){
-        if(utils::download_ncbi_genome("gcf.gff.gz")){
-            utils::unzip();
-            ui->gfflabel->setText("yspex");
-        }
-        else ui->gfflabel->setText("proval");
-    }else{
-        std::string res = "file";
-        ui->gfflabel->setText(QString::fromUtf8(res));
-    }
     QString target = ui->targetEDIT->text();
     if (target.isEmpty()){
         set_errstyle(ui->targetEDIT, 'b');
         optionsISvalid = false;
+    }
+    std::vector<placeTYPE> ptypeFLAGS;
+    if (ui->genPLACE->isChecked()) ptypeFLAGS.push_back(GEN);
+    if (ui->exonPLACE->isChecked()) ptypeFLAGS.push_back(EXON);
+    if (ui->cdsPLACE->isChecked()) ptypeFLAGS.push_back(CDS);
+    if (ui->otherPLACE->isChecked()) ptypeFLAGS.push_back(OTHER);
+    if (ptypeFLAGS.empty()){
+        set_errstyle(ui->placeOPTIONS, 'b');
+        optionsISvalid = false;
+    }
+    if (!optionsISvalid) {
+        return;
     }
 
     int startPOS = ui->startPOSITION->value();
@@ -67,17 +85,53 @@ void MainWindow::on_mainBUTTON_released()
     else if (ui->transitionCTYPE->isChecked()) ctype = TRANSITION;
     else ctype = TRANSVERSION;
 
-    std::vector<placeTYPE> ptypeFLAGS;
-    if (ui->genPLACE->isChecked()) ptypeFLAGS.push_back(GEN);
-    if (ui->exonPLACE->isChecked()) ptypeFLAGS.push_back(EXON);
-    if (ui->cdsPLACE->isChecked()) ptypeFLAGS.push_back(CDS);
-    if (ui->otherPLACE->isChecked()) ptypeFLAGS.push_back(OTHER);
-    if (ptypeFLAGS.empty()){
-        set_errstyle(ui->placeOPTIONS, 'b');
-        optionsISvalid = false;
-    }
+    QString anatationEFURL = ui->ncbiBUTTON->property("fileURL").toString();
+    if (anatationEFURL.isNull()) {
+        if (ui->popUP) {
+            QPoint centerPos = this->rect().center() - ui->popUP->rect().center();
+            centerPos.setY(centerPos.y() +120);
+            centerPos.setX(centerPos.x() +333);
+            ui->popUP->move(centerPos);
+            ui->popUP->raise();
+            ui->popUP->show();
+        }
+        if (loaderMovie) {
+            loaderMovie->start();
+        }
 
-    if (optionsISvalid) ui->tabWidget->setCurrentIndex(1);
+        ui->mainBUTTON->setEnabled(false);
+        QFuture<bool> future = QtConcurrent::run([]() -> bool {
+            if (utils::download_ncbi_genome("gcf.gff.gz")) {
+                return utils::unzip();
+            }
+            return false;
+        });
+        QFutureWatcher<bool> *watcher = new QFutureWatcher<bool>(this);
+
+        connect(watcher, &QFutureWatcher<bool>::finished, this, [this, watcher]() {
+            if (loaderMovie) {
+                loaderMovie->stop();
+            }
+            if (ui->popUP) ui->popUP->hide();
+
+            ui->mainBUTTON->setEnabled(true);
+            if (watcher->result() == true) {
+                ui->gfflabel->setText("yspex");
+                ui->tabWidget->setCurrentIndex(1);
+            } else {
+                ui->gfflabel->setText("ошибка");
+
+            }
+            watcher->deleteLater();
+        });
+
+        watcher->setFuture(future);
+    }
+    else{
+        std::string res = "file";
+        ui->gfflabel->setText(QString::fromUtf8(res));
+        ui->tabWidget->setCurrentIndex(1);
+    }
 }
 
 void MainWindow::on_endPOSITION_valueChanged(int value)

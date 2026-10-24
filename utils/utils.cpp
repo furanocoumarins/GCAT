@@ -76,6 +76,7 @@ bool utils::create_folder(const std::string& name){
             return false;
         }
     } catch (const std::filesystem::filesystem_error& e) {
+        return false;
     }
 }
 
@@ -106,11 +107,15 @@ bool utils::unzip() {
     // NC_012920.1 митохондрия (не добавляется)
 
     for (const std::string& chr : chrs) {
-        std::string command = "gzip -dc ../gcf.gff.gz | grep -w \"NC_0000" + chr + ".*\" > chromosome_" + chr + ".gff";
-        int result = std::system(command.c_str());
-        if (result != 0) {
-            return false;
+        if (!exists_file ("chromosome_" + chr + ".gff"))
+        {
+            std::string command = "gzip -dc ../gcf.gff.gz | grep -w \"NC_0000" + chr + ".*\" > chromosome_" + chr + ".gff";
+            int result = std::system(command.c_str());
+
+            if (result != 0)
+                return false;
         }
+
     }
     return true;
 }

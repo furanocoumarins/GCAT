@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMovie>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -49,5 +50,6 @@ private:
     void clear_style(QWidget * widgetName);
 
     QString default_message_file_export = "Выбрать файл";
+    QMovie *loaderMovie = nullptr;
 };
 #endif // MAINWINDOW_H

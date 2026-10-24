@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Concurrent)
 find_package(CURL REQUIRED)
 
 set(PROJECT_SOURCES
@@ -22,6 +22,7 @@ set(PROJECT_SOURCES
     utils/utils.h
     widgets/empty
 )
+
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(gcat
@@ -51,6 +52,7 @@ endif()
 target_link_libraries(
     gcat PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
+    Qt${QT_VERSION_MAJOR}::Concurrent
     CURL::libcurl
 )
 
@@ -78,3 +80,6 @@ install(TARGETS gcat
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(gcat)
 endif()
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
+     DESTINATION "${CMAKE_CURRENT_BINARY_DIR}"
+)
