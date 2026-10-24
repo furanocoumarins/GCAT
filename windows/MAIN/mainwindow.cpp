@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
 {
     ui->setupUi(this);
 
-    loaderMovie = new QMovie("assets/shark.gif", QByteArray(), this);
+    loaderMovie = new QMovie("assets/cat-cute.gif", QByteArray(), this);
 
     if (ui->popUP) {
         ui->popUP->setWindowFlags(Qt::SubWindow | Qt::FramelessWindowHint);
@@ -50,25 +50,18 @@ void MainWindow::set_errstyle(QWidget * widgetName, char type='a'){
 
 void MainWindow::on_mainBUTTON_released()
 {
-    enum conversionTYPE {ANY, TRANSITION, TRANSVERSION};
-    enum placeTYPE {GEN, EXON, CDS, OTHER};
     bool optionsISvalid = true;
 
-    QString conversionsEFURL = ui->inputfileEXportBUTTON->property("fileURL").toString();
+    conversionsEFURL = ui->inputfileEXportBUTTON->property("fileURL").toString();
     if (conversionsEFURL.isNull()){
         set_errstyle(ui->inputfileEXportBUTTON);
         optionsISvalid = false;
     }
-    QString target = ui->targetEDIT->text();
-    if (target.isEmpty()){
-        set_errstyle(ui->targetEDIT, 'b');
-        optionsISvalid = false;
-    }
-    std::vector<placeTYPE> ptypeFLAGS;
-    if (ui->genPLACE->isChecked()) ptypeFLAGS.push_back(GEN);
-    if (ui->exonPLACE->isChecked()) ptypeFLAGS.push_back(EXON);
-    if (ui->cdsPLACE->isChecked()) ptypeFLAGS.push_back(CDS);
-    if (ui->otherPLACE->isChecked()) ptypeFLAGS.push_back(OTHER);
+
+    if (ui->genPLACE->isChecked()) ptypeFLAGS.push_back(Ui::GEN);
+    if (ui->exonPLACE->isChecked()) ptypeFLAGS.push_back(Ui::EXON);
+    if (ui->cdsPLACE->isChecked()) ptypeFLAGS.push_back(Ui::CDS);
+    if (ui->otherPLACE->isChecked()) ptypeFLAGS.push_back(Ui::OTHER);
     if (ptypeFLAGS.empty()){
         set_errstyle(ui->placeOPTIONS, 'b');
         optionsISvalid = false;
@@ -76,16 +69,15 @@ void MainWindow::on_mainBUTTON_released()
     if (!optionsISvalid) {
         return;
     }
+    chromosome = ui->chrBOX->currentIndex();
+    startPOS = ui->startPOSITION->value();
+    endPOS = ui->endPOSITION->value();
 
-    int startPOS = ui->startPOSITION->value();
-    int endPOS = ui->endPOSITION->value();
+    if (ui->anyCTYPE->isChecked()) ctype = Ui::ANY;
+    else if (ui->transitionCTYPE->isChecked()) ctype = Ui::TRANSITION;
+    else ctype = Ui::TRANSVERSION;
 
-    conversionTYPE ctype;
-    if (ui->anyCTYPE->isChecked()) ctype = ANY;
-    else if (ui->transitionCTYPE->isChecked()) ctype = TRANSITION;
-    else ctype = TRANSVERSION;
 
-    QString anatationEFURL = ui->ncbiBUTTON->property("fileURL").toString();
     if (anatationEFURL.isNull()) {
         if (ui->popUP) {
             QPoint centerPos = this->rect().center() - ui->popUP->rect().center();
@@ -116,7 +108,9 @@ void MainWindow::on_mainBUTTON_released()
 
             ui->mainBUTTON->setEnabled(true);
             if (watcher->result() == true) {
-                ui->gfflabel->setText("yspex");
+                anatationEFURL = QString::number(chromosome+1);
+
+                ui->gfflabel->setText(anatationEFURL);
                 ui->tabWidget->setCurrentIndex(1);
             } else {
                 ui->gfflabel->setText("ошибка");
@@ -128,8 +122,8 @@ void MainWindow::on_mainBUTTON_released()
         watcher->setFuture(future);
     }
     else{
-        std::string res = "file";
-        ui->gfflabel->setText(QString::fromUtf8(res));
+        anatationEFURL = "qew";
+        ui->gfflabel->setText(anatationEFURL);
         ui->tabWidget->setCurrentIndex(1);
     }
 }
@@ -195,10 +189,6 @@ void MainWindow::on_inputfileEXportBUTTON_released()
         fileName = fileName.slice(0, fileName.length()-4);
         ui->inputfileEXportBUTTON->setText(fileName);
     }
-}
-
-void MainWindow::on_targetEDIT_editingFinished(){
-    clear_style(ui->targetEDIT);
 }
 
 void MainWindow::on_genPLACE_released()

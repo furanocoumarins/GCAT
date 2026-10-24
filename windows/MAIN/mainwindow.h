@@ -6,6 +6,8 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
+enum conversionTYPE {ANY, TRANSITION, TRANSVERSION};
+enum placeTYPE {GEN, EXON, CDS, OTHER};
 class MainWindow;
 }
 QT_END_NAMESPACE
@@ -31,8 +33,6 @@ private slots:
 
     void on_inputfileEXportBUTTON_released();
 
-    void on_targetEDIT_editingFinished();
-
     void on_genPLACE_released();
 
     void on_exonPLACE_released();
@@ -51,5 +51,13 @@ private:
 
     QString default_message_file_export = "Выбрать файл";
     QMovie *loaderMovie = nullptr;
+
+    int chromosome;
+    int startPOS;
+    int endPOS;
+    QString conversionsEFURL;
+    QString anatationEFURL;
+    std::vector<Ui::placeTYPE> ptypeFLAGS;
+    Ui::conversionTYPE ctype;
 };
 #endif // MAINWINDOW_H
