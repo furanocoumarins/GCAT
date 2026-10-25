@@ -12,6 +12,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Concurrent)
 find_package(CURL REQUIRED)
+find_path(HTSLIB_INCLUDE_DIR NAMES htslib/hts.h PATHS /usr/include /usr/local/include)
+find_library(HTSLIB_LIBRARY NAMES hts PATHS /usr/lib /usr/lib/x86_64-linux-gnu /usr/local/lib)
+
+if(HTSLIB_INCLUDE_DIR AND HTSLIB_LIBRARY)
+    include_directories(${HTSLIB_INCLUDE_DIR})
+endif()
 
 set(PROJECT_SOURCES
     main.cpp
@@ -20,7 +26,7 @@ set(PROJECT_SOURCES
     windows/MAIN/mainwindow.ui
     utils/utils.cpp
     utils/utils.h
-    widgets/empty
+
 )
 
 
@@ -29,7 +35,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         windows/MAIN/mainwindow.cpp windows/MAIN/mainwindow.h windows/MAIN/mainwindow.ui
-        utils/utils.cpp utils/utils.h widgets/empty
+        utils/utils.cpp utils/utils.h
+        widgets/samtools.h
+        widgets/samtools.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET gcat APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -54,6 +62,7 @@ target_link_libraries(
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Concurrent
     CURL::libcurl
+    ${HTSLIB_LIBRARY}
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

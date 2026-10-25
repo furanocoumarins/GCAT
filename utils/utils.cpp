@@ -1,21 +1,21 @@
 #include "utils.h"
 
-//std::string utils::SBORKA = "GCF_000001405.40";
+//std::string Utils::SBORKA = "GCF_000001405.40";
 
-inline bool utils::exists_file (const std::string& name) { //Fastest way to check if a file exists using standard C++/C++11,14,17/C?
+inline bool Utils::exists_file (const std::string& name) { //Fastest way to check if a file exists using standard C++/C++11,14,17/C?
     struct stat buffer;
     return (stat (name.c_str(), &buffer) == 0);
 }
 
-bool utils::download_ncbi_genome(const std::string& output) {
-    utils::create_main_folder();
-    std::filesystem::current_path(utils::getHomeDirectory()/".gcat");
+bool Utils::download_ncbi_genome(const std::string& output) {
+    Utils::create_main_folder();
+    std::filesystem::current_path(Utils::getHomeDirectory()/".gcat");
 
     CURL* curl;
     FILE* fp;
     CURLcode res;
 
-    if (utils::exists_file(output)) return true;
+    if (Utils::exists_file(output)) return true;
 
     std::string url = std::string("https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gff.gz");
     curl = curl_easy_init();
@@ -50,25 +50,25 @@ bool utils::download_ncbi_genome(const std::string& output) {
     return true;
 }
 
-size_t utils::write_data(void* ptr, size_t size, size_t nmemb, FILE* stream){
+size_t Utils::write_data(void* ptr, size_t size, size_t nmemb, FILE* stream){
     size_t written = fwrite(ptr, size, nmemb, stream);
     return written;
 }
 
-bool utils::create_main_folder(){
-    std::filesystem::path homedir = utils::getHomeDirectory();
+bool Utils::create_main_folder(){
+    std::filesystem::path homedir = Utils::getHomeDirectory();
     if (homedir.empty()) {
         return false;
     }
 
     std::filesystem::path folder = homedir / ".gcat";
 
-    utils::create_folder(folder);
+    Utils::create_folder(folder);
 
     return 0;
 }
 
-bool utils::create_folder(const std::string& name){
+bool Utils::create_folder(const std::string& name){
     try {
         if (std::filesystem::create_directory(name)) {
             return true;
@@ -80,7 +80,7 @@ bool utils::create_folder(const std::string& name){
     }
 }
 
-std::filesystem::path utils::getHomeDirectory() {
+std::filesystem::path Utils::getHomeDirectory() {
     #if defined(_WIN32)
         const char* home = std::getenv("USERPROFILE");
     #else
@@ -92,10 +92,10 @@ std::filesystem::path utils::getHomeDirectory() {
     return std::filesystem::path(home);
 }
 
-bool utils::unzip() {
-    std::filesystem::current_path(utils::getHomeDirectory()/".gcat");
-    utils::create_folder("chrs");
-    std::filesystem::current_path(utils::getHomeDirectory()/".gcat"/"chrs");
+bool Utils::unzip() {
+    std::filesystem::current_path(Utils::getHomeDirectory()/".gcat");
+    Utils::create_folder("chrs");
+    std::filesystem::current_path(Utils::getHomeDirectory()/".gcat"/"chrs");
 
     std::vector<std::string> chrs;
 
@@ -118,4 +118,8 @@ bool utils::unzip() {
 
     }
     return true;
+}
+
+std::string Utils::get_gff_path(int chr){
+    return "qwe";
 }

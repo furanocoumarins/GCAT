@@ -55,7 +55,7 @@ private:
     int chromosome;
     int startPOS;
     int endPOS;
-    QString conversionsEFURL;
+    std::string conversionsEFURL;
     QString anatationEFURL;
     std::vector<Ui::placeTYPE> ptypeFLAGS;
     Ui::conversionTYPE ctype;

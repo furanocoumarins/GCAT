@@ -14,7 +14,7 @@
 #include <QStandardPaths>
 
 
-namespace utils {
+namespace Utils {
     size_t write_data(void* ptr, size_t size, size_t nmemb, FILE* stream);
 
     bool download_ncbi_genome(const std::string& output);
@@ -26,7 +26,9 @@ namespace utils {
     std::filesystem::path getHomeDirectory();
     bool create_main_folder();
     bool create_folder(const std::string& name);
+
+    std::string get_gff_path(int chr);
     //extern std::string SBORKA;
-}
+};
 
 #endif // UTILS_H

@@ -6,10 +6,12 @@
 
 #include <QFileDialog>
 #include "../../utils/utils.h"
+#include "../../widgets/samtools.h"
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->tabWidget->setCurrentIndex(0);
 
     loaderMovie = new QMovie("assets/cat-cute.gif", QByteArray(), this);
 
@@ -52,8 +54,8 @@ void MainWindow::on_mainBUTTON_released()
 {
     bool optionsISvalid = true;
 
-    conversionsEFURL = ui->inputfileEXportBUTTON->property("fileURL").toString();
-    if (conversionsEFURL.isNull()){
+    conversionsEFURL = ui->inputfileEXportBUTTON->property("fileURL").toString().toStdString();
+    if (conversionsEFURL.empty()){
         set_errstyle(ui->inputfileEXportBUTTON);
         optionsISvalid = false;
     }
@@ -93,8 +95,8 @@ void MainWindow::on_mainBUTTON_released()
 
         ui->mainBUTTON->setEnabled(false);
         QFuture<bool> future = QtConcurrent::run([]() -> bool {
-            if (utils::download_ncbi_genome("gcf.gff.gz")) {
-                return utils::unzip();
+            if (Utils::download_ncbi_genome("gcf.gff.gz")) {
+                return Utils::unzip();
             }
             return false;
         });
