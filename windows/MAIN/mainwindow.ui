@@ -30,7 +30,50 @@
     <normaloff>../../assets/icon.png</normaloff>../../assets/icon.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: #333333;</string>
+   <string notr="true">QCheckBox {
+    color: #ffffff;
+    spacing: 6px;
+}
+QCheckBox::indicator {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #777777;
+    background-color: #3a3a3a;
+    border-radius: 2px;
+}
+QCheckBox::indicator:hover {
+    border: 1px solid #ffffff;
+    background-color: #4a4a4a;
+}
+QCheckBox::indicator:checked {
+    background-color: #ffffff;   
+    border: 2px solid #3a3a3a; 
+}
+QCheckBox::indicator:checked:hover {
+    background-color: #4a4a4a;
+    border: 1px solid #ffffff;
+}
+
+QRadioButton {
+    color: #ffffff;
+    spacing: 6px;
+}
+QRadioButton::indicator {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #777777;
+	border-radius: 8px; 
+    background-color: #3a3a3a;
+}
+QRadioButton::indicator:hover {
+    border: 1px solid #ffffff;
+    background-color: #4a4a4a;
+}
+QRadioButton::indicator:checked {
+    background-color: #ffffff;   
+    border: 2px solid #3a3a3a; 
+}
+</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
