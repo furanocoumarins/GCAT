@@ -13,19 +13,42 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(0);
 
-    loaderMovie = new QMovie("assets/cat-cute.gif", QByteArray(), this);
+    QString cat = QCoreApplication::applicationDirPath() + "/assets/cat-cute.gif";
+    QString shark = QCoreApplication::applicationDirPath() + "/assets/shark.gif";
+
+    loaderMovie = new QMovie(cat, QByteArray(), this);
+    loaderMovie_2 = new QMovie(shark, QByteArray(), this);
+
 
     if (ui->popUP) {
         ui->popUP->setWindowFlags(Qt::SubWindow | Qt::FramelessWindowHint);
         ui->popUP->setFixedSize(300, 300);
 
         if (ui->loaderLabel) {
+            ui->loaderLabel->setGeometry(0, 0, 300, 300);
+            ui->loaderLabel->setStyleSheet("background: transparent; border: none;");
+
             ui->loaderLabel->setMovie(loaderMovie);
             ui->loaderLabel->setScaledContents(true);
         }
 
         ui->popUP->hide();
     }
+
+    if (ui->popUP_2) {
+        ui->popUP_2->setWindowFlags(Qt::SubWindow | Qt::FramelessWindowHint);
+        ui->popUP_2->setFixedSize(300, 300);
+
+        if (ui->loaderLabel_2) {
+            ui->loaderLabel_2->setGeometry(0, 0, 300, 300);
+            ui->loaderLabel_2->setStyleSheet("background: transparent; border: none;");
+
+            ui->loaderLabel_2->setMovie(loaderMovie_2);
+            ui->loaderLabel_2->setScaledContents(true);
+        }
+        ui->popUP_2->hide();
+    }
+
     homedir = Utils::getHomeDirectory()/".gcat";
 }
 
@@ -61,6 +84,7 @@ void MainWindow::on_mainBUTTON_released()
         optionsISvalid = false;
     }
 
+    ptypeFLAGS.clear();
     if (ui->genPLACE->isChecked()) ptypeFLAGS.push_back(Ui::GEN);
     if (ui->exonPLACE->isChecked()) ptypeFLAGS.push_back(Ui::EXON);
     if (ui->cdsPLACE->isChecked()) ptypeFLAGS.push_back(Ui::CDS);
@@ -112,19 +136,47 @@ void MainWindow::on_mainBUTTON_released()
             ui->mainBUTTON->setEnabled(true);
             if (watcher->result() == true) {
                 ui->tabWidget->setCurrentIndex(1);
-                ui->resultText->property("analyse_is_running") = true;
-                try {
-                    std::string flname = smt::FilterVcf(chromosome, startPOS, endPOS, ptypeFLAGS, conversionsEFURL, "qwe"); // option 5 out name
-                    QFile file(QString::fromStdString(flname));
-                    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                        QTextStream in(&file);
-                        ui->resultText->setText(in.readAll());
-                        file.close();
-                    }
-                }
-                catch(char const* e){ui->resultText->setText(QString::fromStdString(e));return;}
-                catch(std::string e){ui->resultText->setText(QString::fromStdString(e));return;}
 
+                QCoreApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+                if (ui->popUP_2) {
+                    QPoint centerPos = this->rect().center() - ui->popUP_2->rect().center();
+                    centerPos.setY(centerPos.y());
+                    centerPos.setX(centerPos.x());
+                    ui->popUP_2->move(centerPos);
+                    ui->popUP_2->raise();
+                    ui->popUP_2->show();
+                }
+                if (loaderMovie_2) {
+                    loaderMovie_2->start();
+                }
+
+                QFuture<std::string> filterFuture = QtConcurrent::run(QThreadPool::globalInstance(), [this]() -> std::string {
+                    try {
+                        return smt::FilterVcf(chromosome, startPOS, endPOS, ptypeFLAGS, conversionsEFURL, "qwe"); //option 5 name out
+                    } catch (char const* e) {
+                        return std::string("error: ") + e;
+                    } catch (const std::string& e) {
+                        return "error: " + e;
+                    }
+                });
+                QFutureWatcher<std::string> *filterWatcher = new QFutureWatcher<std::string>(this);
+
+                connect(filterWatcher, &QFutureWatcher<std::string>::finished, this, [this, filterWatcher]() {
+                    if (loaderMovie_2) {
+                        loaderMovie_2->stop();
+                    }
+                    if (ui->popUP_2) ui->popUP_2->hide();
+                    std::string res = filterWatcher->result();
+                    QFile file(QString::fromStdString(res));
+                        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                            QTextStream in(&file);
+                            ui->resultText->setText(in.readAll());
+                            file.close();
+                        }
+                    filterWatcher->deleteLater();
+                });
+
+                filterWatcher->setFuture(filterFuture);
             } else {
                 ui->resultText->setText("ошибка");
 

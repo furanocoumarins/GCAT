@@ -52,6 +52,7 @@ private:
 
     QString default_message_file_export = "Выбрать файл";
     QMovie *loaderMovie = nullptr;
+    QMovie *loaderMovie_2 = nullptr;
 
     int chromosome;
     int startPOS;

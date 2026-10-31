@@ -943,24 +943,56 @@ border: none;
        <attribute name="title">
         <string>Результат</string>
        </attribute>
-       <widget class="QWidget" name="gridLayoutWidget">
+       <widget class="QTextBrowser" name="resultText">
         <property name="geometry">
          <rect>
-          <x>-1</x>
-          <y>-1</y>
+          <x>0</x>
+          <y>0</y>
           <width>1111</width>
-          <height>591</height>
+          <height>611</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="0">
-          <widget class="QTextBrowser" name="resultText">
-           <property name="analyse_is_running" stdset="0">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       </widget>
+       <widget class="QFrame" name="popUP_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>26</width>
+          <height>36</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: transparent;
+border: none;
+</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Shadow::Raised</enum>
+        </property>
+        <widget class="QLabel" name="loaderLabel_2">
+         <property name="geometry">
+          <rect>
+           <x>9</x>
+           <y>9</y>
+           <width>16</width>
+           <height>18</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: none;
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
        </widget>
       </widget>
      </widget>
