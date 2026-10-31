@@ -64,6 +64,14 @@ target_link_libraries(
     CURL::libcurl
     ${HTSLIB_LIBRARY}
 )
+if(UNIX AND NOT APPLE)
+    install(FILES "assets/icon.jpg"
+            DESTINATION "share/icons/hicolor/256x256/apps"
+            RENAME "gcat.jpg")
+
+    install(FILES "gcat.desktop"
+            DESTINATION "share/applications")
+endif()
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
