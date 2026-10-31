@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QMovie>
+#include <filesystem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -59,5 +60,6 @@ private:
     QString anatationEFURL;
     std::vector<Ui::placeTYPE> ptypeFLAGS;
     Ui::conversionTYPE ctype;
+    std::filesystem::path  homedir;
 };
 #endif // MAINWINDOW_H

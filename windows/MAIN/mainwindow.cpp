@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
 
         ui->popUP->hide();
     }
+    homedir = Utils::getHomeDirectory()/".gcat";
 }
 
 MainWindow::~MainWindow()
@@ -71,7 +72,7 @@ void MainWindow::on_mainBUTTON_released()
     if (!optionsISvalid) {
         return;
     }
-    chromosome = ui->chrBOX->currentIndex();
+    chromosome = ui->chrBOX->currentIndex() + 1;
     startPOS = ui->startPOSITION->value();
     endPOS = ui->endPOSITION->value();
 
@@ -110,12 +111,22 @@ void MainWindow::on_mainBUTTON_released()
 
             ui->mainBUTTON->setEnabled(true);
             if (watcher->result() == true) {
-                anatationEFURL = QString::number(chromosome+1);
-
-                ui->gfflabel->setText(anatationEFURL);
                 ui->tabWidget->setCurrentIndex(1);
+                ui->resultText->property("analyse_is_running") = true;
+                try {
+                    std::string flname = smt::FilterVcf(chromosome, startPOS, endPOS, ptypeFLAGS, conversionsEFURL, "qwe"); // option 5 out name
+                    QFile file(QString::fromStdString(flname));
+                    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                        QTextStream in(&file);
+                        ui->resultText->setText(in.readAll());
+                        file.close();
+                    }
+                }
+                catch(char const* e){ui->resultText->setText(QString::fromStdString(e));return;}
+                catch(std::string e){ui->resultText->setText(QString::fromStdString(e));return;}
+
             } else {
-                ui->gfflabel->setText("ошибка");
+                ui->resultText->setText("ошибка");
 
             }
             watcher->deleteLater();
@@ -125,7 +136,7 @@ void MainWindow::on_mainBUTTON_released()
     }
     else{
         anatationEFURL = "qew";
-        ui->gfflabel->setText(anatationEFURL);
+        ui->resultText->setText(anatationEFURL);
         ui->tabWidget->setCurrentIndex(1);
     }
 }

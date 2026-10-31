@@ -121,5 +121,5 @@ bool Utils::unzip() {
 }
 
 std::string Utils::get_gff_path(int chr){
-    return "qwe";
+    return (Utils::getHomeDirectory()/".gcat"/"chrs").string() + "/chromosome_" + (chr > 9 ? std::to_string(chr) : "0"+std::to_string(chr)) + ".gff";
 }

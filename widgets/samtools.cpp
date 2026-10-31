@@ -58,14 +58,14 @@ int smt::VcfChrom2i(const std::string& vcf_chrom) {
 }
 
 
-bool smt::FilterVcf(int targetChr,int startPOS,int endPOS,const std::vector<Ui::placeTYPE>& ptypeFLAGS,const std::string& vcfInputPath,const std::string& vcfOutputPath)
+std::string smt::FilterVcf(int targetChr,int startPOS,int endPOS,const std::vector<Ui::placeTYPE>& ptypeFLAGS,const std::string& vcfInputPath,const std::string& vcfOutputname)
 {
     // gff procces
     std::vector<MaskInterval> mask;
 
     std::ifstream gffFile(Utils::get_gff_path(targetChr));
     if (!gffFile.is_open()) {
-        return false;
+        throw Utils::get_gff_path(targetChr);
     }
 
     std::string line;
@@ -77,6 +77,8 @@ bool smt::FilterVcf(int targetChr,int startPOS,int endPOS,const std::vector<Ui::
         int start, end;
 
         if (!(ss >> chrom >> source >> type >> start >> end)) continue;
+
+        if (smt::VcfChrom2i(chrom) != targetChr) continue;
 
         if (!smt::checkType(type, ptypeFLAGS)) continue;
 
@@ -99,27 +101,37 @@ bool smt::FilterVcf(int targetChr,int startPOS,int endPOS,const std::vector<Ui::
     // vcf procces
     htsFile* inf = hts_open(vcfInputPath.c_str(), "r");
     if (!inf) {
-        return false;
+        throw "vcf open error";
     }
 
     bcf_hdr_t* hdr = bcf_hdr_read(inf);
     if (!hdr) {
         hts_close(inf);
-        return false;
+        throw "header vcf open error";
     }
 
-    htsFile* outf = hts_open(vcfOutputPath.c_str(), "w");
+    std::filesystem::current_path(Utils::getHomeDirectory() / ".gcat");
+    Utils::create_folder("results");
+    std::filesystem::current_path(Utils::getHomeDirectory() / ".gcat"/ "results");
+
+    time_t tmt = time(nullptr);
+    struct tm* tm = localtime(&tmt);
+    char tbuf[80];
+    strftime(tbuf, sizeof(tbuf), " - %H_%M %Y-%m-%d", tm);
+    std::string newName = vcfOutputname + tbuf + ".vcf";
+
+    htsFile* outf = hts_open(newName.c_str(), "w");
     if (!outf) {
         bcf_hdr_destroy(hdr);
         hts_close(inf);
-        return false;
+        throw "output open error";
     }
 
     if (bcf_hdr_write(outf, hdr) < 0) {
         bcf_hdr_destroy(hdr);
         hts_close(inf);
         hts_close(outf);
-        return false;
+        throw "vcfunc open error";
     }
 
     bcf1_t* rec = bcf_init();
@@ -150,6 +162,6 @@ bool smt::FilterVcf(int targetChr,int startPOS,int endPOS,const std::vector<Ui::
     hts_close(inf);
     hts_close(outf);
 
-    return true;
+    return newName;
 }
 

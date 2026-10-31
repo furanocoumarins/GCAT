@@ -31,6 +31,6 @@ namespace smt{
 
     int VcfChrom2i(const std::string& vcf_chrom);
 
-    bool FilterVcf(int targetChr,int startPOS,int endPOS,const std::vector<Ui::placeTYPE>& ptypeFLAGS,const std::string& vcfPath,const std::string& OutputPath);
+    std::string FilterVcf(int targetChr,int startPOS,int endPOS,const std::vector<Ui::placeTYPE>& ptypeFLAGS,const std::string& vcfPath,const std::string& vcfOutputname);
 }
 #endif // SAMTOOLS_H

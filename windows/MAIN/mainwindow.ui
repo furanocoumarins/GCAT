@@ -54,7 +54,7 @@
        <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -691,8 +691,8 @@ QComboBox {
          <rect>
           <x>350</x>
           <y>400</y>
-          <width>400</width>
-          <height>140</height>
+          <width>345</width>
+          <height>97</height>
          </rect>
         </property>
         <property name="frameShape">
@@ -943,33 +943,29 @@ border: none;
        <attribute name="title">
         <string>Результат</string>
        </attribute>
-       <widget class="QLabel" name="gfflabel">
+       <widget class="QWidget" name="gridLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>290</x>
-          <y>140</y>
-          <width>361</width>
-          <height>271</height>
+          <x>-1</x>
+          <y>-1</y>
+          <width>1111</width>
+          <height>591</height>
          </rect>
         </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0">
+          <widget class="QTextBrowser" name="resultText">
+           <property name="analyse_is_running" stdset="0">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </widget>
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1160</width>
-     <height>23</height>
-    </rect>
-   </property>
   </widget>
  </widget>
  <resources/>
