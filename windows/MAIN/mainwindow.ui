@@ -27,7 +27,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../../assets/icon.jpg</normaloff>../../assets/icon.jpg</iconset>
+    <normaloff>../../assets/icon.png</normaloff>../../assets/icon.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: #333333;</string>
@@ -61,7 +61,7 @@
        <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::TextElideMode::ElideLeft</enum>

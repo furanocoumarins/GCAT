@@ -65,13 +65,28 @@ target_link_libraries(
     ${HTSLIB_LIBRARY}
 )
 if(UNIX AND NOT APPLE)
-    install(FILES "assets/icon.jpg"
-            DESTINATION "share/icons/hicolor/256x256/apps"
-            RENAME "gcat.jpg")
+    if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT OR CMAKE_INSTALL_PREFIX STREQUAL "/usr/local")
+        set(CMAKE_INSTALL_PREFIX "$ENV{HOME}/.local" CACHE PATH "prefix" FORCE)
+    endif()
 
-    install(FILES "gcat.desktop"
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/gcat.desktop.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/gcat.desktop"
+        @ONLY
+    )
+
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/assets"
+            DESTINATION "bin")
+
+    install(FILES "assets/icon.png"
+            DESTINATION "share/pixmaps"
+            RENAME "gcat.png")
+
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/gcat.desktop"
             DESTINATION "share/applications")
 endif()
+
+
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

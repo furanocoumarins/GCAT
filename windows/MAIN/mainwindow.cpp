@@ -49,6 +49,20 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
         ui->popUP_2->hide();
     }
 
+    QString appdir = QCoreApplication::applicationDirPath();
+    QString logoPath = QDir(appdir).filePath("assets/logo.png");
+    QString iconPath = QDir(appdir).filePath("assets/icon.png");
+    QIcon wIcon(iconPath);
+    if (!wIcon.isNull()) {
+        this->setWindowIcon(wIcon);
+    }
+    if (ui->logoLabel) {
+        QPixmap logoPixmap(logoPath);
+        if (!logoPixmap.isNull()) {
+            ui->logoLabel->setPixmap(logoPixmap);
+        }
+    }
+
     homedir = Utils::getHomeDirectory()/".gcat";
 }
 

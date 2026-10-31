@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=GCAT
+Comment=Gui Conversations Analyse Tool
+Exec=gcat
+Icon=@CMAKE_INSTALL_PREFIX@/share/pixmaps/gcat.png
+Terminal=false
+Categories=Development;Qt;Utility;
+
