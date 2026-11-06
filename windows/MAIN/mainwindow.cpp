@@ -114,6 +114,8 @@ void MainWindow::on_mainBUTTON_released()
     startPOS = ui->startPOSITION->value();
     endPOS = ui->endPOSITION->value();
 
+    filename_preix = ui->filename_edit->text().toStdString();
+
     if (ui->anyCTYPE->isChecked()) ctype = Ui::ANY;
     else if (ui->transitionCTYPE->isChecked()) ctype = Ui::TRANSITION;
     else ctype = Ui::TRANSVERSION;
@@ -166,7 +168,7 @@ void MainWindow::on_mainBUTTON_released()
 
                 QFuture<std::string> filterFuture = QtConcurrent::run(QThreadPool::globalInstance(), [this]() -> std::string {
                     try {
-                        return smt::FilterVcf(chromosome, startPOS, endPOS, ptypeFLAGS, conversionsEFURL, "qwe"); //option 5 name out
+                        return smt::FilterVcf(chromosome, startPOS, endPOS, ptypeFLAGS, conversionsEFURL, filename_preix);
                     } catch (char const* e) {
                         return std::string("error: ") + e;
                     } catch (const std::string& e) {

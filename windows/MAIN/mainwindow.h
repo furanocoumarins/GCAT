@@ -57,6 +57,7 @@ private:
     int chromosome;
     int startPOS;
     int endPOS;
+    std::string filename_preix ="";
     std::string conversionsEFURL;
     QString anatationEFURL;
     std::vector<Ui::placeTYPE> ptypeFLAGS;

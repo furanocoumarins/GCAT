@@ -61,7 +61,7 @@
        <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -403,9 +403,9 @@
         </property>
         <layout class="QVBoxLayout" name="SourceOfSearch_lay_4">
          <item>
-          <widget class="QLabel" name="SourceSDeearch_lay_4">
+          <widget class="QLabel" name="filename_option">
            <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Опция 5&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Сохранить как&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="textFormat">
             <enum>Qt::TextFormat::AutoText</enum>
@@ -428,7 +428,7 @@
             </spacer>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit_2"/>
+            <widget class="QLineEdit" name="filename_edit"/>
            </item>
            <item>
             <spacer name="horizontalSpacer_11">
