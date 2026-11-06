@@ -30,30 +30,30 @@ bool smt::checkType(const std::string& gff_type, const std::vector<Ui::placeTYPE
 }
 
 int smt::VcfChrom2i(const std::string& vcf_chrom) {
-    if (vcf_chrom == "CM000663.2" || vcf_chrom == "NC_000001.11") return 1;
-    if (vcf_chrom == "CM000664.2" || vcf_chrom == "NC_000002.12") return 2;
-    if (vcf_chrom == "CM000665.2" || vcf_chrom == "NC_000003.12") return 3;
-    if (vcf_chrom == "CM000666.2" || vcf_chrom == "NC_000004.12") return 4;
-    if (vcf_chrom == "CM000667.2" || vcf_chrom == "NC_000005.12") return 5;
-    if (vcf_chrom == "CM000668.2" || vcf_chrom == "NC_000006.12") return 6;
-    if (vcf_chrom == "CM000669.2" || vcf_chrom == "NC_000007.12") return 7;
-    if (vcf_chrom == "CM000670.2" || vcf_chrom == "NC_000008.12") return 8;
-    if (vcf_chrom == "CM000671.2" || vcf_chrom == "NC_000009.12") return 9;
-    if (vcf_chrom == "CM000672.2" || vcf_chrom == "NC_000010.11") return 10;
-    if (vcf_chrom == "CM000673.2" || vcf_chrom == "NC_000011.10") return 11;
-    if (vcf_chrom == "CM000674.2" || vcf_chrom == "NC_000012.12") return 12;
-    if (vcf_chrom == "CM000675.2" || vcf_chrom == "NC_000013.11") return 13;
-    if (vcf_chrom == "CM000676.2" || vcf_chrom == "NC_000014.9")  return 14;
-    if (vcf_chrom == "CM000677.2" || vcf_chrom == "NC_000015.10") return 15;
-    if (vcf_chrom == "CM000678.2" || vcf_chrom == "NC_000016.10") return 16;
-    if (vcf_chrom == "CM000679.2" || vcf_chrom == "NC_000017.11") return 17;
-    if (vcf_chrom == "CM000680.2" || vcf_chrom == "NC_000018.10") return 18;
-    if (vcf_chrom == "CM000681.2" || vcf_chrom == "NC_000019.10") return 19;
-    if (vcf_chrom == "CM000682.2" || vcf_chrom == "NC_000020.11") return 20;
-    if (vcf_chrom == "CM000683.2" || vcf_chrom == "NC_000021.9")  return 21;
-    if (vcf_chrom == "CM000684.2" || vcf_chrom == "NC_000022.11") return 22;
-    if (vcf_chrom == "CM000685.2" || vcf_chrom == "NC_000023.11") return 23;
-    if (vcf_chrom == "CM000686.2" || vcf_chrom == "NC_000024.10") return 24;
+    if (vcf_chrom == "CM000663.2" || vcf_chrom == "NC_000001.11" || vcf_chrom == "1" || vcf_chrom == "chr1") return 1;
+    if (vcf_chrom == "CM000664.2" || vcf_chrom == "NC_000002.12" || vcf_chrom == "2" || vcf_chrom == "chr2") return 2;
+    if (vcf_chrom == "CM000665.2" || vcf_chrom == "NC_000003.12" || vcf_chrom == "3" || vcf_chrom == "ch3") return 3;
+    if (vcf_chrom == "CM000666.2" || vcf_chrom == "NC_000004.12" || vcf_chrom == "4" || vcf_chrom == "chr4") return 4;
+    if (vcf_chrom == "CM000667.2" || vcf_chrom == "NC_000005.12" || vcf_chrom == "5" || vcf_chrom == "chr5") return 5;
+    if (vcf_chrom == "CM000668.2" || vcf_chrom == "NC_000006.12" || vcf_chrom == "6" || vcf_chrom == "chr6") return 6;
+    if (vcf_chrom == "CM000669.2" || vcf_chrom == "NC_000007.12" || vcf_chrom == "7" || vcf_chrom == "chr7") return 7;
+    if (vcf_chrom == "CM000670.2" || vcf_chrom == "NC_000008.12" || vcf_chrom == "8" || vcf_chrom == "chr8") return 8;
+    if (vcf_chrom == "CM000671.2" || vcf_chrom == "NC_000009.12" || vcf_chrom == "9" || vcf_chrom == "chr9") return 9;
+    if (vcf_chrom == "CM000672.2" || vcf_chrom == "NC_000010.11" || vcf_chrom == "10" || vcf_chrom == "chr10") return 10;
+    if (vcf_chrom == "CM000673.2" || vcf_chrom == "NC_000011.10" || vcf_chrom == "11" || vcf_chrom == "chr11") return 11;
+    if (vcf_chrom == "CM000674.2" || vcf_chrom == "NC_000012.12" || vcf_chrom == "12" || vcf_chrom == "chr12") return 12;
+    if (vcf_chrom == "CM000675.2" || vcf_chrom == "NC_000013.11" || vcf_chrom == "13" || vcf_chrom == "chr13") return 13;
+    if (vcf_chrom == "CM000676.2" || vcf_chrom == "NC_000014.9" || vcf_chrom == "14" || vcf_chrom == "chr14")  return 14;
+    if (vcf_chrom == "CM000677.2" || vcf_chrom == "NC_000015.10" || vcf_chrom == "15" || vcf_chrom == "chr15") return 15;
+    if (vcf_chrom == "CM000678.2" || vcf_chrom == "NC_000016.10" || vcf_chrom == "16" || vcf_chrom == "chr16") return 16;
+    if (vcf_chrom == "CM000679.2" || vcf_chrom == "NC_000017.11" || vcf_chrom == "17" || vcf_chrom == "chr17") return 17;
+    if (vcf_chrom == "CM000680.2" || vcf_chrom == "NC_000018.10" || vcf_chrom == "18" || vcf_chrom == "chr18") return 18;
+    if (vcf_chrom == "CM000681.2" || vcf_chrom == "NC_000019.10" || vcf_chrom == "19" || vcf_chrom == "chr19") return 19;
+    if (vcf_chrom == "CM000682.2" || vcf_chrom == "NC_000020.11" || vcf_chrom == "20" || vcf_chrom == "chr20") return 20;
+    if (vcf_chrom == "CM000683.2" || vcf_chrom == "NC_000021.9" || vcf_chrom == "21" || vcf_chrom == "chr21")  return 21;
+    if (vcf_chrom == "CM000684.2" || vcf_chrom == "NC_000022.11" || vcf_chrom == "22" || vcf_chrom == "chr22") return 22;
+    if (vcf_chrom == "CM000685.2" || vcf_chrom == "NC_000023.11" || vcf_chrom == "23" || vcf_chrom == "chr23") return 23;
+    if (vcf_chrom == "CM000686.2" || vcf_chrom == "NC_000024.10" || vcf_chrom == "24" || vcf_chrom == "chr24") return 24;
     return -1;
 }
 

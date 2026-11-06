@@ -30,50 +30,7 @@
     <normaloff>../../assets/icon.png</normaloff>../../assets/icon.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">QCheckBox {
-    color: #ffffff;
-    spacing: 6px;
-}
-QCheckBox::indicator {
-    width: 14px;
-    height: 14px;
-    border: 1px solid #777777;
-    background-color: #3a3a3a;
-    border-radius: 2px;
-}
-QCheckBox::indicator:hover {
-    border: 1px solid #ffffff;
-    background-color: #4a4a4a;
-}
-QCheckBox::indicator:checked {
-    background-color: #ffffff;   
-    border: 2px solid #3a3a3a; 
-}
-QCheckBox::indicator:checked:hover {
-    background-color: #4a4a4a;
-    border: 1px solid #ffffff;
-}
-
-QRadioButton {
-    color: #ffffff;
-    spacing: 6px;
-}
-QRadioButton::indicator {
-    width: 14px;
-    height: 14px;
-    border: 1px solid #777777;
-	border-radius: 8px; 
-    background-color: #3a3a3a;
-}
-QRadioButton::indicator:hover {
-    border: 1px solid #ffffff;
-    background-color: #4a4a4a;
-}
-QRadioButton::indicator:checked {
-    background-color: #ffffff;   
-    border: 2px solid #3a3a3a; 
-}
-</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
@@ -104,7 +61,7 @@ QRadioButton::indicator:checked {
        <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::TextElideMode::ElideLeft</enum>
@@ -158,16 +115,6 @@ QRadioButton::indicator:checked {
         </property>
         <layout class="QVBoxLayout" name="SourceOfSearch_lay">
          <item>
-          <widget class="QLabel" name="SourceSDeearch_lay">
-           <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Расположение&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="textFormat">
-            <enum>Qt::TextFormat::AutoText</enum>
-           </property>
-          </widget>
-         </item>
-         <item>
           <layout class="QHBoxLayout" name="horizontalLayout">
            <property name="spacing">
             <number>6</number>
@@ -195,6 +142,19 @@ QRadioButton::indicator:checked {
               </widget>
              </item>
              <item>
+              <spacer name="verticalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Orientation::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
               <widget class="QCheckBox" name="exonPLACE">
                <property name="text">
                 <string>Экзоны</string>
@@ -202,11 +162,37 @@ QRadioButton::indicator:checked {
               </widget>
              </item>
              <item>
+              <spacer name="verticalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Orientation::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
               <widget class="QCheckBox" name="cdsPLACE">
                <property name="text">
                 <string>CDS'</string>
                </property>
               </widget>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_5">
+               <property name="orientation">
+                <enum>Qt::Orientation::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
              </item>
              <item>
               <widget class="QCheckBox" name="otherPLACE">
@@ -229,6 +215,16 @@ QRadioButton::indicator:checked {
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="SourceSDeearch_lay">
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Где искать?&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::TextFormat::AutoText</enum>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -739,8 +735,8 @@ QComboBox {
        <widget class="QFrame" name="Anatation_options">
         <property name="geometry">
          <rect>
-          <x>350</x>
-          <y>400</y>
+          <x>380</x>
+          <y>420</y>
           <width>345</width>
           <height>97</height>
          </rect>
@@ -1001,6 +997,9 @@ border: none;
           <width>1111</width>
           <height>611</height>
          </rect>
+        </property>
+        <property name="lineWrapMode">
+         <enum>QTextEdit::LineWrapMode::NoWrap</enum>
         </property>
        </widget>
        <widget class="QFrame" name="popUP_2">
