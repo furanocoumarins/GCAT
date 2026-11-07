@@ -106,17 +106,17 @@ bool Utils::unzip() {
     } // 23=X 24=Y
     // NC_012920.1 митохондрия (не добавляется)
 
-    for (const std::string& chr : chrs) {
-        if (!exists_file ("chromosome_" + chr + ".gff"))
-        {
-            std::string command = "gzip -dc ../gcf.gff.gz | grep -w \"NC_0000" + chr + ".*\" > chromosome_" + chr + ".gff";
-            int result = std::system(command.c_str());
+    std::string command =
+      "gzip -dc ../gcf.gff.gz | awk -F'\\t' '"
+      "/^#/ { next } "
+      "$1 ~ /^NC_0000[0-9][0-9][.\\t]/ { "
+      "  chr = substr($1, 8, 2); "
+      "  if (chr >= \"01\" && chr <= \"24\") "
+      "    print >> (\"chromosome_\" chr \".gff\") "
+      "}'";
+    int result = std::system(command.c_str());
+    if (result != 0) return false;
 
-            if (result != 0)
-                return false;
-        }
-
-    }
     return true;
 }
 
